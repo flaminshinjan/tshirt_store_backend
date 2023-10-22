@@ -1,5 +1,5 @@
 
-#T-shirt Store API
+# T-shirt Store API
 
 A simple yet powerful Express.js-based RESTful API for a T-shirt store. Manage t-shirts, user authentication, reviews, and more.
 
