@@ -2,6 +2,11 @@ const express = require('express');
 const app = express();
 const port = 8080;
 
+let tshirts = [
+  { id: 1, size: 'large', logo: '🌟' },
+  { id: 2, size: 'medium', logo: '🚀' }
+];
+
 app.use(express.json());
 
 app.listen(port, () => {
@@ -9,22 +14,29 @@ app.listen(port, () => {
   });
   
 
-app.get('/tshirt', (req, res) => {
-  res.status(200).send({
-    tshirt: '👕',
-    size: 'large'
-  })
-});
-
-app.post('/tshirt/:id', (req, res) => {
-  const { id } = req.params;
-  const { logo } = req.body;
-
-  if (!logo) {
-    res.status(418).send({ message: 'We need a logo!' });
-  }
-
-  res.send({
-    tshirt: `👕 with your ${logo} and ID of ${id}`,
+  app.get('/tshirts', (req, res) => {
+    res.status(200).send(tshirts);
   });
-});
+  
+
+  app.get('/tshirt/:id', (req, res) => {
+    const { id } = req.params;
+    const tshirt = tshirts.find(t => t.id === parseInt(id));
+    if (!tshirt) 
+    return res.status(404).send({ message: 'T-shirt not found.' });
+    res.status(200).send(tshirt);
+  });
+  
+  app.post('/tshirt', (req, res) => {
+    const { size, logo } = req.body;
+    if (!size || !logo) return res.status(400).send({ message: 'Size and logo are required.' });
+    const newTshirt = {
+      id: tshirts.length + 1, 
+      size, 
+      logo
+    };
+    tshirts.push(newTshirt);
+    res.status(201).send(newTshirt);
+  });
+  
+  
