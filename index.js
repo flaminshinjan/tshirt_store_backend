@@ -49,3 +49,10 @@ app.listen(port, () => {
     res.status(200).send(tshirt);
   });
   
+  app.delete('/tshirt/:id', (req, res) => {
+    const { id } = req.params;
+    const index = tshirts.findIndex(t => t.id === parseInt(id));
+    if (index === -1) return res.status(404).send({ message: 'T-shirt not found.' });
+    const deletedTshirt = tshirts.splice(index, 1);
+    res.status(200).send(deletedTshirt[0]);
+  });  
