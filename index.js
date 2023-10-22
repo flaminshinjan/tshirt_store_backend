@@ -39,4 +39,13 @@ app.listen(port, () => {
     res.status(201).send(newTshirt);
   });
   
+  app.put('/tshirt/:id', (req, res) => {
+    const { id } = req.params;
+    const { size, logo } = req.body;
+    const tshirt = tshirts.find(t => t.id === parseInt(id));
+    if (!tshirt) return res.status(404).send({ message: 'T-shirt not found.' });
+    tshirt.size = size;
+    tshirt.logo = logo;
+    res.status(200).send(tshirt);
+  });
   
